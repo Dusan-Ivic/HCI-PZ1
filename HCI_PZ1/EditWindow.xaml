@@ -1,0 +1,135 @@
+﻿<Window x:Class="HCI_PZ1.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HCI_PZ1"
+        mc:Ignorable="d"
+        Title="EditWindow" WindowStyle="None" AllowsTransparency="True" Background="Transparent" SizeToContent="WidthAndHeight" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+	<Window.Resources>
+
+		<Style x:Key="CustomButtonStyle" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid>
+							<Path Fill="{TemplateBinding Background}" Data="M 50,336 L 200,390 L 350,336 50,336" />
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,25"/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Background" Value="LightBlue"/>
+				</Trigger>
+			</Style.Triggers>
+
+		</Style>
+
+	</Window.Resources>
+
+	<Canvas Width="400" Height="400">
+		<Path x:Name="UIPath" Stroke="DarkGray" StrokeThickness="3">
+			<Path.Fill>
+				<ImageBrush ImageSource="all-ghilied-up-dark.jpg"/>
+			</Path.Fill>
+			<Path.Data>
+				<PathGeometry>
+					<PathFigure StartPoint="0,0">
+						<LineSegment Point="0,50"/>
+						<LineSegment Point="10,80"/>
+						<LineSegment Point="10,230"/>
+						<LineSegment Point="0,260"/>
+						<LineSegment Point="0,330"/>
+						<LineSegment Point="200,400"/>
+						<LineSegment Point="400,330"/>
+						<LineSegment Point="400,260"/>
+						<LineSegment Point="390,230"/>
+						<LineSegment Point="390,80"/>
+						<LineSegment Point="400,50"/>
+						<LineSegment Point="400,0"/>
+						<LineSegment Point="0,0"/>
+					</PathFigure>
+				</PathGeometry>
+			</Path.Data>
+		</Path>
+
+		<Button x:Name="buttonClose" Content="X" Foreground="White" Width="30" Height="30" Click="buttonClose_Click" Canvas.Right="10" Canvas.Top="10">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="5"/>
+				</Style>
+				<Style TargetType="Button">
+					<Setter Property="Background" Value="DarkRed"/>
+				</Style>
+			</Button.Resources>
+		</Button>
+		<Button x:Name="buttonMinimize" Content="—" Foreground="Black" Width="30" Height="30" Click="buttonMinimize_Click" Canvas.Right="45" Canvas.Top="10">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="5"/>
+				</Style>
+			</Button.Resources>
+		</Button>
+
+		<Label x:Name="labelRedniBroj" Content="Redni br. izdanja" Foreground="White" Width="105" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,55,0,0"/>
+		<TextBox x:Name="textBoxRedniBroj" Width="105" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,80,0,0" GotFocus="TextBoxRedniBroj_GotFocus" LostFocus="TextBoxRedniBroj_LostFocus"/>
+
+		<Label x:Name="labelNaziv" Content="Naziv video igre" Foreground="White" Width="150" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,55,0,0"/>
+		<TextBox x:Name="textBoxNaziv"  Width="150" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,80,0,0" GotFocus="TextBoxNaziv_GotFocus" LostFocus="TextBoxNaziv_LostFocus"/>
+
+		<Label x:Name="labelDatum" Content="Datum izlaska" Foreground="White" Width="105" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,110,0,0"/>
+		<DatePicker x:Name="datePickerDatum" Width="105" Height="30" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,135,0,0" GotFocus="DatePickerDatum_GotFocus" LostFocus="DatePickerDatum_LostFocus"/>
+
+		<Label x:Name="labelSlika" Content="Putanja do naslovne slike" Foreground="White" Width="150" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,110,0,0"/>
+		<Button x:Name="buttonSlika" Content="IZABERI SLIKU" Width="150" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,135,0,0" Click="ButtonSlika_Click" GotFocus="ButtonSlika_GotFocus"/>
+
+		<Label x:Name="labelSlikaPregled" Content="SLIKA" Foreground="White" Width="85" Height="25" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="295,55,0,0"/>
+		<Grid Width="85" Height="85" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="295,80,0,0">
+			<Border BorderBrush="DarkGray" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Image Name="slikaPregled" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</Border>
+			<Popup IsOpen="{Binding IsMouseOver, ElementName=slikaPregled, Mode=OneWay}" PopupAnimation="Slide">
+				<Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<Image Source="{Binding Source, ElementName=slikaPregled}" MaxWidth="300" MaxHeight="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+			</Popup>
+		</Grid>
+
+		<Label x:Name="labelOpis" Content="Kratak opis video igre" Foreground="White" Width="360" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,165,0,0"/>
+		<DockPanel Width="360" Height="134" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0">
+			<ToolBar DockPanel.Dock="Top">
+				<ToggleButton Command="EditingCommands.ToggleBold" x:Name="btnBold" Content="B"/>
+				<Separator/>
+
+				<ToggleButton Command="EditingCommands.ToggleItalic" x:Name="btnItalic" Content="I"/>
+				<Separator/>
+
+				<ToggleButton Command="EditingCommands.ToggleUnderline" x:Name="btnUnderline" Content="U"/>
+				<Separator/>
+
+				<ComboBox x:Name="cmbFontSize" Width="50" SelectionChanged="CmbFontSize_SelectionChanged"/>
+				<Separator/>
+
+				<ComboBox x:Name="cmbFontColor" Width="70" SelectionChanged="CmbFontColor_SelectionChanged"/>
+				<Separator/>
+
+				<ComboBox x:Name="cmbFontFamily" Width="140" SelectionChanged="CmbFontFamily_SelectionChanged"/>
+
+			</ToolBar>
+			<StatusBar DockPanel.Dock="Bottom" Height="30">
+				<StatusBarItem>
+					<Label x:Name="labelBrojReci" Content="BROJ REČI: 0"/>
+				</StatusBarItem>
+			</StatusBar>
+
+			<RichTextBox x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" TextChanged="RtbEditor_TextChanged" GotFocus="RtbEditor_GotFocus" LostFocus="RtbEditor_LostFocus"/>
+
+		</DockPanel>
+
+		<Button Style="{StaticResource CustomButtonStyle}" x:Name="buttonEdit" Content="IZMENI" Foreground="Black" FontWeight="Bold" Width="400" Click="buttonEdit_Click"/>
+
+	</Canvas>
+</Window>

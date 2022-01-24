@@ -1,0 +1,155 @@
+﻿<Window x:Class="HCI_PZ1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HCI_PZ1"
+        mc:Ignorable="d"
+        Title="MainWindow" Closing="Window_Closing" WindowStyle="None" AllowsTransparency="True" Background="Transparent" SizeToContent="WidthAndHeight" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+	<Window.Resources>
+
+		<Style x:Key="CenterGridHeaderStyle" TargetType="DataGridColumnHeader">
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		</Style>
+
+		<Style x:Key="WrapAndCenterAlignText" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="Wrap"/>
+			<Setter Property="TextAlignment" Value="Center"/>
+		</Style>
+
+		<Style x:Key="CustomButtonStyle" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid>
+							<Path Fill="{TemplateBinding Background}" Data="M 50,332 L 300,390 L 550,332 50,332" />
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,25"/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Background" Value="LightBlue"/>
+				</Trigger>
+			</Style.Triggers>
+
+		</Style>
+
+		<Style x:Key="VerticalAlignCellContent" TargetType="{x:Type DataGridCell}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type DataGridCell}">
+						<Grid Background="{TemplateBinding Background}">
+							<ContentPresenter VerticalAlignment="Center" />
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	</Window.Resources>
+
+	<Canvas Width="600" Height="400">
+		<Path x:Name="UIPath" Stroke="DarkGray" StrokeThickness="3">
+			<Path.Fill>
+				<ImageBrush ImageSource="all-ghilied-up.jpg"/>
+			</Path.Fill>
+			<Path.Data>
+				<PathGeometry>
+					<PathFigure StartPoint="0,0">
+						<LineSegment Point="0,50"/>
+						<LineSegment Point="10,80"/>
+						<LineSegment Point="10,230"/>
+						<LineSegment Point="0,260"/>
+						<LineSegment Point="0,330"/>
+						<LineSegment Point="300,400"/>
+						<LineSegment Point="600,330"/>
+						<LineSegment Point="600,260"/>
+						<LineSegment Point="590,230"/>
+						<LineSegment Point="590,80"/>
+						<LineSegment Point="600,50"/>
+						<LineSegment Point="600,0"/>
+						<LineSegment Point="0,0"/>
+					</PathFigure>
+				</PathGeometry>
+			</Path.Data>
+		</Path>
+
+		<Button x:Name="buttonSave" Content="SAČUVAJ" Foreground="Black" Width="65" Height="30" Click="ButtonSave_Click" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="10,10,0,0">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="5"/>
+				</Style>
+			</Button.Resources>
+		</Button>
+		
+		<Button x:Name="buttonClose" Content="X" Foreground="White" Width="30" Height="30" Click="buttonClose_Click" Canvas.Right="10" Canvas.Top="10">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="5"/>
+				</Style>
+				<Style TargetType="Button">
+					<Setter Property="Background" Value="DarkRed"/>
+				</Style>
+			</Button.Resources>
+		</Button>
+		
+		<Button x:Name="buttonMinimize" Content="—" Foreground="Black" Width="30" Height="30" Click="buttonMinimize_Click" Canvas.Right="45" Canvas.Top="10">
+			<Button.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="5"/>
+				</Style>
+			</Button.Resources>
+		</Button>
+
+		<Grid Width="600" Height="80" HorizontalAlignment="Center" VerticalAlignment="Top">
+			<Grid.Resources>
+				<DropShadowEffect x:Key="imageShadowEffectDefault" Color="LightSlateGray" ShadowDepth="4" Direction="235" Opacity="10"/>
+				<DropShadowEffect x:Key="imageShadowEffectMouseOver" Color="DarkSlateGray" ShadowDepth="4" Direction="235" Opacity="10"/>
+			</Grid.Resources>
+			<Image Source="call-of-duty-crop.png" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Image.Style>
+					<Style TargetType="{x:Type Image}">
+						<Setter Property="Effect" Value="{StaticResource imageShadowEffectDefault}"/>
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Effect" Value="{StaticResource imageShadowEffectMouseOver}"/>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Image.Style>
+			</Image>
+		</Grid>
+
+		<DataGrid x:Name="dataGridSerijalVideoIgara" ItemsSource="{Binding SerijalVideoIgara}" Height="240" Width="560" RowHeight="90" ColumnHeaderStyle="{StaticResource CenterGridHeaderStyle}" CellStyle="{StaticResource VerticalAlignCellContent}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" Margin="20,80,0,0">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="R. BROJ" Binding="{Binding RedniBroj}" ElementStyle="{StaticResource WrapAndCenterAlignText}" Width="60"/>
+				<DataGridTemplateColumn Header="SLIKA" Width="*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Image Source="{Binding Slika}" HorizontalAlignment="Center" Stretch="Uniform"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="NAZIV" Binding="{Binding Naziv}" ElementStyle="{StaticResource WrapAndCenterAlignText}" Width="170"/>
+				<DataGridTextColumn Header="DATUM" Binding="{Binding Datum, StringFormat=\{0:dd.MM.yyyy.\}}" ElementStyle="{StaticResource WrapAndCenterAlignText}" Width="90"/>
+				<DataGridTemplateColumn Header="/" Width="100">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Vertical">
+								<Button x:Name="buttonRead" Content="PROČITAJ" Width="100" Height="30" Click="ButtonRead_Click"/>
+								<Button x:Name="buttonEdit" Content="IZMENI" Width="100" Height="30" Click="ButtonEdit_Click"/>
+								<Button x:Name="buttonDelete" Content="OBRIŠI" Width="100" Height="30" Click="ButtonDelete_Click"/>
+							</StackPanel>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<Button Style="{StaticResource CustomButtonStyle}" x:Name="buttonAdd" Content="DODAJ NOVU IGRU" Foreground="Black" FontWeight="Bold" Width="600" Click="buttonAdd_Click"/>
+
+	</Canvas>
+</Window>
